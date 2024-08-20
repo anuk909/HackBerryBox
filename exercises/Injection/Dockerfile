@@ -1,18 +1,20 @@
-# Use an official PHP image as a parent image
-FROM php:8.1-apache
+# Use an official PHP runtime as a parent image
+FROM php:7.4-apache
 
-# Set the working directory
+# Set the working directory in the container
 WORKDIR /var/www/html
 
 # Copy the current directory contents into the container at /var/www/html
-COPY . /var/www/html
+COPY ./app /var/www/html
 
-# Install MySQL and PHP extensions
-RUN apt-get update && apt-get install -y default-mysql-client \
-    && docker-php-ext-install mysqli pdo pdo_mysql
+# Install any needed packages specified in requirements.txt
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Expose port 80
+# Make port 80 available to the world outside this container
 EXPOSE 80
 
-# Start Apache in the foreground
+# Define environment variable
+ENV NAME World
+
+# Run apache2 when the container launches
 CMD ["apache2-foreground"]

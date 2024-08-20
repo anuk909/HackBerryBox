@@ -1,15 +1,14 @@
-# Use an official PHP image as a parent image
+# Use a PHP 8.1 Apache base image
 FROM php:8.1-apache
 
 # Set the working directory
 WORKDIR /var/www/html
 
-# Copy the current directory contents into the container at /var/www/html
-COPY . /var/www/html
+# Copy the application files into the container
+COPY app/ /var/www/html/
 
-# Install MySQL and PHP extensions
-RUN apt-get update && apt-get install -y default-mysql-client \
-    && docker-php-ext-install mysqli pdo pdo_mysql
+# Install the mysqli PHP extension
+RUN docker-php-ext-install mysqli
 
 # Expose port 80
 EXPOSE 80
