@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  victim:
+    build: .
+    ports:
+      - "5000:5000"
+    networks:
+      - mitm_network
+
+  attacker:
+    build: .
+    ports:
+      - "5001:5000"
+    networks:
+      - mitm_network
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./attacker:/app
+
+networks:
+  mitm_network:
+    driver: bridge

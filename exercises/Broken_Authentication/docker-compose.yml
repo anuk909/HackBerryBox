@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8083:80"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=pibank_user
+      - DB_PASSWORD=secure_password
+      - DB_NAME=pibank
+    volumes:
+      - ./app:/var/www/html
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: pibank
+      MYSQL_USER: pibank_user
+      MYSQL_PASSWORD: secure_password
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
